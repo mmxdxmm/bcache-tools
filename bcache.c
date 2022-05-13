@@ -198,7 +198,8 @@ int tree(void)
 	sprintf(out, "%s", begin);
 	list_for_each_entry_safe(devs, n, &head, dev_list) {
 		if ((devs->version == BCACHE_SB_VERSION_CDEV
-		     || devs->version == BCACHE_SB_VERSION_CDEV_WITH_UUID)
+		     || devs->version == BCACHE_SB_VERSION_CDEV_WITH_UUID
+		     || devs->version == BCACHE_SB_VERSION_CDEV_WITH_FEATURES)
 		    && strcmp(devs->state, BCACHE_BASIC_STATE_ACTIVE) == 0) {
 			sprintf(out + strlen(out), "%s\n", devs->name);
 			list_for_each_entry_safe(tmp, m, &head, dev_list) {
@@ -230,7 +231,8 @@ int attach_both(char *cdev, char *backdev)
 	if (ret != 0)
 		return ret;
 	if (type != BCACHE_SB_VERSION_BDEV
-	    && type != BCACHE_SB_VERSION_BDEV_WITH_OFFSET) {
+	    && type != BCACHE_SB_VERSION_BDEV_WITH_OFFSET
+	    && type != BCACHE_SB_VERSION_BDEV_WITH_FEATURES) {
 		fprintf(stderr, "%s is not an backend device\n", backdev);
 		return 1;
 	}
@@ -243,7 +245,8 @@ int attach_both(char *cdev, char *backdev)
 	if (strlen(cdev) != 36) {
 		ret = detail_dev(cdev, &bd, &cd, &type);
 		if (type != BCACHE_SB_VERSION_CDEV
-		    && type != BCACHE_SB_VERSION_CDEV_WITH_UUID) {
+		    && type != BCACHE_SB_VERSION_CDEV_WITH_UUID
+		    && type != BCACHE_SB_VERSION_CDEV_WITH_FEATURES) {
 			fprintf(stderr, "%s is not an cache device\n", cdev);
 			return 1;
 		}
@@ -358,10 +361,13 @@ int main(int argc, char **argv)
 		ret = detail_dev(devname, &bd, &cd, &type);
 		if (ret != 0)
 			return ret;
-		if (type == BCACHE_SB_VERSION_BDEV) {
+		if (type == BCACHE_SB_VERSION_BDEV
+		    || type == BCACHE_SB_VERSION_BDEV_WITH_OFFSET
+		    || type == BCACHE_SB_VERSION_BDEV_WITH_FEATURES) {
 			return stop_backdev(devname);
 		} else if (type == BCACHE_SB_VERSION_CDEV
-			   || type == BCACHE_SB_VERSION_CDEV_WITH_UUID) {
+			   || type == BCACHE_SB_VERSION_CDEV_WITH_UUID
+			   || type == BCACHE_SB_VERSION_CDEV_WITH_FEATURES) {
 			return unregister_cset(cd.base.cset);
 		}
 		return 1;
@@ -407,7 +413,8 @@ int main(int argc, char **argv)
 			return ret;
 		}
 		if (type != BCACHE_SB_VERSION_BDEV
-		    && type != BCACHE_SB_VERSION_BDEV_WITH_OFFSET) {
+		    && type != BCACHE_SB_VERSION_BDEV_WITH_OFFSET
+		    && type != BCACHE_SB_VERSION_BDEV_WITH_FEATURES) {
 			fprintf(stderr,
 				"Only backend device is suppported\n");
 			return 1;
@@ -433,7 +440,8 @@ int main(int argc, char **argv)
 			return ret;
 		}
 		if (type != BCACHE_SB_VERSION_BDEV
-		    && type != BCACHE_SB_VERSION_BDEV_WITH_OFFSET) {
+		    && type != BCACHE_SB_VERSION_BDEV_WITH_OFFSET
+		    && type != BCACHE_SB_VERSION_BDEV_WITH_FEATURES) {
 			fprintf(stderr,
 				"Only backend device is suppported\n");
 			return 1;

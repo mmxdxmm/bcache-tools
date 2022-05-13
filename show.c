@@ -75,8 +75,9 @@ int show_bdevs_detail(void)
 		if (strlen(devs->attachuuid) == 36) {
 			cset_to_devname(&head, devs->cset, attachdev);
 		} else if (devs->version == BCACHE_SB_VERSION_CDEV
+			   || devs->version == BCACHE_SB_VERSION_CDEV_WITH_UUID
 			   || devs->version ==
-			   BCACHE_SB_VERSION_CDEV_WITH_UUID) {
+			   BCACHE_SB_VERSION_CDEV_WITH_FEATURES) {
 			strcpy(attachdev, BCACHE_NO_SUPPORT);
 		} else {
 			strcpy(attachdev, BCACHE_ATTACH_ALONE);
@@ -135,8 +136,9 @@ int show_bdevs(void)
 		if (strlen(devs->attachuuid) == 36) {
 			cset_to_devname(&head, devs->cset, attachdev);
 		} else if (devs->version == BCACHE_SB_VERSION_CDEV
+			   || devs->version == BCACHE_SB_VERSION_CDEV_WITH_UUID
 			   || devs->version ==
-			   BCACHE_SB_VERSION_CDEV_WITH_UUID) {
+			   BCACHE_SB_VERSION_CDEV_WITH_FEATURES) {
 			strcpy(attachdev, BCACHE_NO_SUPPORT);
 		} else {
 			strcpy(attachdev, BCACHE_ATTACH_ALONE);

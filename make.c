@@ -266,10 +266,14 @@ static void write_sb(char *dev, struct sb_context *sbc, bool bdev, bool force)
 			ret = detail_dev(dev, &bd, &cd, &type);
 			if (ret != 0)
 				exit(EXIT_FAILURE);
-			if (type == BCACHE_SB_VERSION_BDEV) {
+			if (type == BCACHE_SB_VERSION_BDEV
+			    || type == BCACHE_SB_VERSION_BDEV_WITH_OFFSET
+			    || type == BCACHE_SB_VERSION_BDEV_WITH_FEATURES) {
 				ret = stop_backdev(dev);
 			} else if (type == BCACHE_SB_VERSION_CDEV
-				|| type == BCACHE_SB_VERSION_CDEV_WITH_UUID) {
+				   || type == BCACHE_SB_VERSION_CDEV_WITH_UUID
+				   || type ==
+				   BCACHE_SB_VERSION_CDEV_WITH_FEATURES) {
 				ret = unregister_cset(cd.base.cset);
 			} else {
 				fprintf(stderr,

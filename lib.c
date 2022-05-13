@@ -277,10 +277,12 @@ int get_dev_bname(char *devname, char *bname)
 int get_bname(struct dev *dev, char *bname)
 {
 	if (dev->version == BCACHE_SB_VERSION_CDEV
-	    || dev->version == BCACHE_SB_VERSION_CDEV_WITH_UUID)
+	    || dev->version == BCACHE_SB_VERSION_CDEV_WITH_UUID
+	    || dev->version == BCACHE_SB_VERSION_CDEV_WITH_FEATURES)
 		strcpy(bname, BCACHE_NO_SUPPORT);
 	else if (dev->version == BCACHE_SB_VERSION_BDEV
-		   || dev->version == BCACHE_SB_VERSION_BDEV_WITH_OFFSET)
+		 || dev->version == BCACHE_SB_VERSION_BDEV_WITH_OFFSET
+		 || dev->version == BCACHE_SB_VERSION_BDEV_WITH_FEATURES)
 		return get_dev_bname(dev->name, bname);
 	return 0;
 }
@@ -313,10 +315,12 @@ int get_backdev_attachpoint(char *devname, char *point)
 int get_point(struct dev *dev, char *point)
 {
 	if (dev->version == BCACHE_SB_VERSION_CDEV
-	    || dev->version == BCACHE_SB_VERSION_CDEV_WITH_UUID)
+	    || dev->version == BCACHE_SB_VERSION_CDEV_WITH_UUID
+	    || dev->version == BCACHE_SB_VERSION_CDEV_WITH_FEATURES)
 		strcpy(point, BCACHE_NO_SUPPORT);
 	else if (dev->version == BCACHE_SB_VERSION_BDEV
-		   || dev->version == BCACHE_SB_VERSION_BDEV_WITH_OFFSET)
+		 || dev->version == BCACHE_SB_VERSION_BDEV_WITH_OFFSET
+		 || dev->version == BCACHE_SB_VERSION_BDEV_WITH_FEATURES)
 		return get_backdev_attachpoint(dev->name, point);
 	return 0;
 }
@@ -327,7 +331,8 @@ int cset_to_devname(struct list_head *head, char *cset, char *devname)
 
 	list_for_each_entry(dev, head, dev_list) {
 		if ((dev->version == BCACHE_SB_VERSION_CDEV
-		     || dev->version == BCACHE_SB_VERSION_CDEV_WITH_UUID)
+		     || dev->version == BCACHE_SB_VERSION_CDEV_WITH_UUID
+		     || dev->version == BCACHE_SB_VERSION_CDEV_WITH_FEATURES)
 		    && strcmp(dev->cset, cset) == 0)
 			strcpy(devname, dev->name);
 	}
