@@ -90,5 +90,24 @@ void check_data_offset_for_zoned_device(char *devname,
 
 int is_zoned_device(char *devname)
 {
+	char str[128];
+	FILE *file;
+	int res;
+
+	snprintf(str, sizeof(str),
+		"/sys/block/%s/queue/zoned",
+		basename(devname));
+	file = fopen(str, "r");
+	if (file) {
+		memset(str, 0, sizeof(str));
+		res = fscanf(file, "%s", str);
+		fclose(file);
+
+		/* "none" indicates non-zoned device */
+		if (res == 1)
+			return !(strcmp(str, "none") == 0);
+	}
+
+	/* Only used when "zoned" file doesn't exist */
 	return (get_zone_size(devname) != 0);
 }
