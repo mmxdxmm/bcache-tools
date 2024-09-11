@@ -1,3 +1,15 @@
+termux编译流程:
+①安装依赖
+pkg install build-essential pkg-config libuuid git
+②编译
+make
+make install
+(编译完后安装不了可以到文件夹下复制出来)
+
+本项目已上传用mi10pro(cmi)编译的工具
+
+
+
 These are the userspace tools required for bcache.
 
 Bcache is a patch for the Linux kernel to use SSDs to cache other block
