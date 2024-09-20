@@ -1,6 +1,8 @@
 termux编译流程:
 ①安装依赖
 pkg install build-essential pkg-config libuuid git
+或
+apt -y install build-essential pkg-config uuid-dev libblkid-dev git
 ②编译
 make
 make install
